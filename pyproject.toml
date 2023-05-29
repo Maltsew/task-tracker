@@ -14,6 +14,7 @@ uvicorn = "^0.22.0"
 psycopg2-binary = "^2.9.6"
 asyncpg = "^0.27.0"
 alembic = "^1.11.1"
+envparse = "^0.2.0"
 
 
 [tool.poetry.group.test.dependencies]
