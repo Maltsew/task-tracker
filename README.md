@@ -3,36 +3,41 @@
 poetry run
 ```
 
+Запуск приложения
+```bash
+poetry run uvicorn main:app --reload
+```
+
 ## Alembic
-Начальная инициализация миграций
+1) Начальная инициализация миграций
 
 ```bash
-alembic init [catalog for migrations]
+alembic init [catalog-for-migrations]
 ```
-edit `alembic.ini`
+2) Отредактировать `alembic.ini`
 ```python
-sqlalchemy.url = [path to db]
+sqlalchemy.url = [path-to-db]
 ```
-### Configure `env.py`
+Настройка конфигурации `env.py`
 
-Add db module to `PYTHONPATH`
+4) Добавить модуль `db` в окружение `PYTHONPATH`
 ```python
 import sys
 sys.path.append('/task_manager/db/')
 ```
 
-import Base model
+5) Импортировать базовую модель
 ```python
 from task_manager.db import tables
 target_metadata = tables.Base.metadata
 ```
 
-Make migrations
+Создание миграции
 ```bash
 poetry run alembic revision --autogenerate -m "comment"
 ```
 
-Running upgrade
+Выполнить апгрейд
 ```bash
 poetry run alembic upgrade head
 ```
