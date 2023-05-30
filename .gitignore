@@ -1,1 +1,4 @@
 */__pycache__/
+alembic.ini
+task_manager/db/__pycache__/
+task_manager/db/migrations/
