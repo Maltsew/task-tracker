@@ -2,3 +2,5 @@
 alembic.ini
 task_manager/db/__pycache__/
 task_manager/db/migrations/
+__pycache__/
+
