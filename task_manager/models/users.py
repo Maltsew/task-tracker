@@ -1,9 +1,8 @@
-from pydantic import BaseModel
+from .base import TunedModel
 
 
-class User(BaseModel):
+class User(TunedModel):
     user_id: int
     first_name: str
     last_name: str
     email: str
-    hashed_password: str
