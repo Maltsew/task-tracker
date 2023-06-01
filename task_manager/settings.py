@@ -10,10 +10,8 @@ class Settings(BaseSettings):
     database_url: str = 'postgresql+asyncpg://fastapi:a2095a2095@0.0.0.0:5432/fastapi_app'
 
 
-# settings = Settings(
-#     _env_file='.env',
-#     _env_file_encoding='utf-8'
-# )
+settings = Settings(
+)
 
 
 
