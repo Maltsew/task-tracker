@@ -16,9 +16,9 @@ router = APIRouter(
 
 
 @router.get('/', response_model=List[User])
-async def get_users(session: Session = Depends(get_session)):
+async def get_users(skip: int = 0, limit: int = 25, session: Session = Depends(get_session)):
     # style 2.0
-    query = select(user)
+    query = select(user).offset(skip).limit(limit)
     result = await session.execute(query)
     return result.scalars().all()
 
