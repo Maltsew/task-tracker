@@ -1,10 +1,19 @@
 from .base import TunedModel
+from pydantic import Field
+from datetime import datetime
 
 
 class Task(TunedModel):
-    task_id: int
     title: str
     description: str
     assign_to_id: int
-    created_at: str
     status: str
+
+
+class CreateTask(Task):
+    pass
+
+
+class ShowTask(Task):
+    task_id: int
+    created_at: datetime = Field(default_factory=datetime.now)
