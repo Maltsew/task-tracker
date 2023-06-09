@@ -24,4 +24,9 @@ async def get_tasks(service: TasksService = Depends()):
 @router.post('/', response_model=None)
 async def create_task(task_body: CreateTask, service: TasksService = Depends()):
     """ Создать задачу"""
-    return await service.create_task(title=task_body.title, description=task_body.description, assign_to_id=task_body.assign_to_id, status=task_body.status)
+    return await service.create_task(
+        title=task_body.title,
+        description=task_body.description,
+        assign_to_id=task_body.assign_to_id,
+        status=task_body.status
+    )
