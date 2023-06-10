@@ -17,3 +17,4 @@ class CreateTask(Task):
 class ShowTask(Task):
     task_id: int
     created_at: datetime = Field(default_factory=datetime.now)
+    last_modify: datetime = Field(default_factory=datetime.now)

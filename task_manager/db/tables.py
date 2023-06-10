@@ -29,7 +29,7 @@ class User(Base):
         return f"Пользователю {self.first_name}, {self.last_name} поручено: {self.tasks}"
 
 
-TaskStatus = Literal["pending", "inprogress", "completed"]
+TaskStatus = Literal["pending", "inprogress", "completed"] #TODO completed -> ready
 
 
 class Task(Base):
@@ -44,6 +44,7 @@ class Task(Base):
     assign_to_id: Mapped[int] = mapped_column(ForeignKey("users.user_id"))
     user: Mapped[User] = relationship(back_populates="tasks")
     created_at: Mapped[str] = mapped_column(DateTime, server_default=func.now())
+    last_modify: Mapped[str] = mapped_column(DateTime, server_default=func.now())
     status: Mapped[TaskStatus]
 
     def __repr__(self) -> str:
