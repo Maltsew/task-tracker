@@ -3,7 +3,7 @@
 """
 from typing import List, Union
 
-from sqlalchemy import select, insert
+from sqlalchemy import select, insert, and_
 from sqlalchemy.orm import Session
 
 from fastapi import HTTPException
@@ -20,6 +20,18 @@ class TasksService:
     """
     def __init__(self, session: Session = Depends(get_session)):
         self.session = session
+
+    async def check_task_already_exist(self, title: str, description: str, assign_to_id: int) -> bool:
+        """ проверка существование задачи в базе"""
+        query = select(task).\
+            filter(task.title == title).\
+            filter(task.description == description).\
+            filter(task.assign_to_id == assign_to_id)
+        result = await self.session.execute(query)
+        exist_task = result.scalars().first()
+        if exist_task:
+            raise HTTPException(status_code=400, detail='Task already exist')
+        return True
 
     async def get_all_tasks(self, skip: int = 0, limit: int = 25) -> Union[List[ShowTask], None]:
         """ Возвращает список всех задач
@@ -40,10 +52,13 @@ class TasksService:
         """ Создать новую задачу
         Возвращает созданную задачу
         """
-        create_task = task(title=title, description=description, assign_to_id=assign_to_id, status=status)
-        self.session.add(create_task)
-        await self.session.commit()
-        return create_task
+        # проверка на существование задачи
+        check_task = await self.check_task_already_exist(title, description, assign_to_id)
+        if check_task:
+            create_task = task(title=title, description=description, assign_to_id=assign_to_id, status=status)
+            self.session.add(create_task)
+            await self.session.commit()
+            return create_task
 
     async def get_task_by_id(self, task_id: int) -> ShowTask:
         """ Получить задачу по id
@@ -54,3 +69,5 @@ class TasksService:
         if not get_task_by_id:
             raise HTTPException(status_code=404, detail='Tasks not found')
         return get_task_by_id
+
+
