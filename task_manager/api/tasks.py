@@ -44,7 +44,10 @@ async def update_task(task_id: int, updated_task: dict, service: TasksService = 
     return await service.update_task_by_id(task_id, **updated_task)
 
 
-@router.get('/status/{status}', response_model=None)
+@router.get('/status/{status}', response_model=List[ShowTask])
 async def get_tasks_by_status(status: str, service: TasksService = Depends()):
     """ Получить все задачи с заданным статусом"""
     return await service.get_tasks_by_status(status)
+
+
+# @router.get('/created/{date}', )
