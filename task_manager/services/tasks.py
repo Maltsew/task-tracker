@@ -3,7 +3,7 @@
 """
 from typing import List, Union
 
-from sqlalchemy import select, insert, and_
+from sqlalchemy import select, func, update
 from sqlalchemy.orm import Session
 
 from fastapi import HTTPException
@@ -70,4 +70,16 @@ class TasksService:
             raise HTTPException(status_code=404, detail='Tasks not found')
         return get_task_by_id
 
-
+    async def update_task_by_id(self, task_id: int, **kwargs) -> ShowTask:
+        """ Изменить тело задачи по id"""
+        await self.get_task_by_id(task_id)
+        update_query = (
+            update(task).
+            where(task.task_id == task_id).
+            values(last_modify=func.now(), **kwargs).
+            return_defaults()
+        )
+        await self.session.execute(update_query)
+        await self.session.commit()
+        get_task_by_id = await self.get_task_by_id(task_id)
+        return get_task_by_id

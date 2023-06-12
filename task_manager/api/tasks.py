@@ -36,3 +36,9 @@ async def create_task(task_body: CreateTask, service: TasksService = Depends()):
 async def get_task_by_id(task_id: int, service: TasksService = Depends()):
     """ Получить задачу по id"""
     return await service.get_task_by_id(task_id)
+
+
+@router.put('/{task_id}', response_model=ShowTask)
+async def update_task(task_id: int, updated_task: dict, service: TasksService = Depends()):
+    """ Обновление задачи"""
+    return await service.update_task_by_id(task_id, **updated_task)
