@@ -83,3 +83,12 @@ class TasksService:
         await self.session.commit()
         get_task_by_id = await self.get_task_by_id(task_id)
         return get_task_by_id
+
+    async def get_tasks_by_status(self, status: str) -> Union[List[ShowTask], None]:
+        """ Получить все задачи с заданным статусом"""
+        query = select(task).filter(task.status == status)
+        result = await self.session.execute(query)
+        get_tasks = result.scalars().all()
+        if not get_tasks:
+            raise HTTPException(status_code=404, detail='Tasks not found')
+        return get_tasks
